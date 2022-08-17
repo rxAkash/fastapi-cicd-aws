@@ -1,31 +1,11 @@
 name: fastapi_hms
 
 on:
-  pull_request:
-    branches: ["main"]
+  push:
+    branches:
+      - main
 
 jobs:
-  build:
-    timeout-minutes: 3
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - run: |
-        # git fetch 
-    
-    - name: Setup python 3.9
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f */requirements.txt ]; then pip install -r */requirements.txt; fi
-    - name: Lint with pylint
-      run: |
-        result=`pylint users/app/api/app.py | sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p'`
-        echo "Result : $result"
-
   deploy:
     name: Deploy to ec2 on master branch PR
     runs-on: ubuntu@latest
