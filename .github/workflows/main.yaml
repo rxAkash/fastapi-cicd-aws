@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     name: Deploy to ec2 on master branch PR
-    runs-on: ubuntu@latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout the files
