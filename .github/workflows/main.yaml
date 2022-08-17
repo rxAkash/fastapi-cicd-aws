@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - name: Checkout the files
-        uses: action/checkout@v2
+        uses: actions/checkout@v2
 
       - name: Deploy to server
         uses: easingthemes/ssh-deploy@main
