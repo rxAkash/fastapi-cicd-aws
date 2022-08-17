@@ -1,13 +1,12 @@
 name: fastapi_hms
 
 on:
-  push:
-    branches: ["main","feature/cicd"]
   pull_request:
-    branches: ["main","develop"]
+    branches: ["main"]
 
 jobs:
   build:
+    timeout-minutes: 3
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -26,7 +25,18 @@ jobs:
       run: |
         result=`pylint users/app/api/app.py | sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p'`
         echo "Result : $result"
-        if [ $result < 8 ]; then 
-          echo "Game over!"
-          exit 1
-        fi
+
+  deploy:
+    name: Deploy to ec2 on master branch PR
+    runs-on: ubuntu@latest
+
+    steps:
+      - name: Checkout the files
+        uses: action/checkout@v2
+
+      - name: Deploy to server
+        uses: easingthemes/ssh-deploy@main
+        env: 
+          SSH_PRIVATE_KEY: ${{ secrets.AWS_EC2_PEM }}
+          REMOTE_HOST: ${{ secrets.AWS_EC2_PUBLIC_IP }}
+          REMOTE_USER: ${{ secrets.AWS_EC2_USERNAME }}
