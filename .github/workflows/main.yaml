@@ -15,8 +15,8 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Deploy to server
-        uses: easingthemes/ssh-deploy@main
-        env: 
-          SSH_PRIVATE_KEY: ${{ secrets.AWS_EC2_PEM }}
-          REMOTE_HOST: ${{ secrets.AWS_EC2_PUBLIC_IP }}
-          REMOTE_USER: ${{ secrets.AWS_EC2_USERNAME }}
+        uses: aws-actions/configure-aws-credentials@v1
+        with: 
+          aws-access-key-id: ${{ secrets.AWS_EC2_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_EC2_SECRET_KEY }}
+          aws-region: ap-south-1
